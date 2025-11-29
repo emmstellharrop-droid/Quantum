@@ -1,1 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VIP Trading Dashboard | Derek Castillo</title>
+    <style>
+        /* Color Variables */
+        :root {
+            --primary-blue: #2B7EF7;
+            --dark-blue: #1E5FD9;
+            --white: #FFFFFF;
+            --off-white: #F5F5F5;
+            --light-gray: #E8E8E8;
+            --black: #000000;
+            --dark-bg: #0A1628;
+            --teal: #00D4C4;
+            --purple: #A855F7;
+            --green: #10B981;
+            --red: #FF4444;
+        }
+        
+        /* Reset & Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+        
+        body {
+            background: var(--white);
+            color: var(--black);
+            min-height: 100vh;
+            line-height: 1.6;
+        }
+        
+        /* Header */
+        .header {
+            background: var(--white);
+            padding: 1rem 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+        }
+        
+        .vip-btn {
+            background: var(--primary-blue);
+            color: var(--white);
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        /* Main Content */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+        
+        /* Profile Card */
+        .profile-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            border: 1px solid var(--light-gray);
+        }
+        
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-blue), var(--teal));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 2rem;
+            font-weight: 700;
+        }
+        
+        .profile-info h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .vip-badge {
+            background: linear-gradient(45deg, var(--teal), var(--purple));
+            color: var(--white);
+            padding: 0.5rem 1.25rem;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            display: inline-block;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .stat-card {
+            background: var(--off-white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-blue);
+            margin: 0.5rem 0;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            color: var(--black);
+            font-weight: 600;
+        }
+        
+        /* Countdown Section */
+        .countdown-section {
+            background: linear-gradient(135deg, var(--dark-bg), #1A2F4F);
+            color: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .countdown-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .countdown-timer {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin: 1.5rem 0;
+            font-family: monospace;
+        }
+        
+        /* Crypto Prices */
+        .crypto-section {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .crypto-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+        }
+        
+        .crypto-card {
+            background: var(--off-white);
+            padding: 1.25rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .crypto-symbol {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .crypto-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+        
+        .price-change.positive {
+            color: var(--green);
+            font-weight: 600;
+        }
+        
+        .price-change.negative {
+            color: var(--red);
+            font-weight: 600;
+        }
+        
+        /* Analytics */
+        .analytics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .analytics-card {
+            background: var(--off-white);
+            padding: 1.5rem;
+            border-radius: 12px;
+            text-align: center;
+        }
+        
+        .metric-value {
+            font-size: 2.25rem;
+            font-weight: 700;
+            margin: 0.5rem 0;
+        }
+        
+        .metric-blue { color: var(--primary-blue); }
+        .metric-teal { color: var(--teal); }
+        .metric-purple { color: var(--purple); }
+        
+        /* Admin Section */
+        .admin-section {
+            background: linear-gradient(135deg, var(--primary-blue), var(--teal));
+            color: var(--white);
+            border-radius: 16px;
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .admin-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        
+        .admin-name {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--white);
+            border-top: 1px solid var(--light-gray);
+            padding: 1rem;
+        }
+        
+        .nav-buttons {
+            display: flex;
+            justify-content: space-around;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--black);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .nav-btn.active {
+            color: var(--primary-blue);
+        }
+        
+        .nav-icon {
+            font-size: 1.25rem;
+        }
+        
+        .nav-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">
+                <span>🚀</span>
+                <span>QuantumTrader</span>
+            </div>
+            <button class="vip-btn">VIP ACCESS</button>
+        </nav>
+    </header>
 
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Profile Section -->
+        <section class="profile-card">
+            <div class="profile-header">
+                <div class="avatar">DC</div>
+                <div class="profile-info">
+                    <h1>Derek Castillo</h1>
+                    <div class="vip-badge">EXCLUSIVE VIP MEMBER</div>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Current Balance</div>
+                    <div class="stat-value">$500.00</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Total Profit</div>
+                    <div class="stat-value">+$92.50</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIP Countdown -->
+        <section class="countdown-section">
+            <div class="countdown-title">VIP EXCLUSIVE ACCESS ENDS IN</div>
+            <div class="countdown-timer" id="countdownTimer">30d 00:00:00</div>
+            <div style="opacity: 0.9;">Renewal Date: December 3, 2025</div>
+        </section>
+
+        <!-- Crypto Prices -->
+        <section class="crypto-section">
+            <h2 class="section-title">Live Market Prices</h2>
+            <div class="crypto-grid" id="cryptoGrid">
+                <!-- Crypto cards will be inserted here by JavaScript -->
+            </div>
+        </section>
+
+        <!-- Trading Analytics -->
+        <section class="crypto-section">
+            <h2 class="section-title">Trading Performance</h2>
+            <div class="analytics-grid">
+                <div class="analytics-card">
+                    <div class="stat-label">Trades by Mark</div>
+                    <div class="metric-value metric-blue">12</div>
+                    <div class="stat-label">Executed Trades</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="stat-label">Win Rate</div>
+                    <div class="metric-value metric-teal">75%</div>
+                    <div class="stat-label">Success Ratio</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="stat-label">VIP ROI</div>
+                    <div class="metric-value metric-purple">+18.5%</div>
+                    <div class="stat-label">Since Nov 3</div>
+                </div>
+                <div class="analytics-card">
+                    <div class="stat-label">Active Trades</div>
+                    <div class="metric-value metric-blue">3</div>
+                    <div class="stat-label">Running Now</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Administrator -->
+        <section class="admin-section">
+            <div class="admin-title">YOUR PERSONAL TRADING ADMINISTRATOR</div>
+            <div class="admin-name">MARK ETHAN</div>
+            <div style="opacity: 0.9;">24/7 Dedicated Support & Trade Execution</div>
+        </section>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-buttons">
+            <button class="nav-btn active">
+                <span class="nav-icon">📊</span>
+                <span class="nav-label">Dashboard</span>
+            </button>
+            <button class="nav-btn">
+                <span class="nav-icon">💹</span>
+                <span class="nav-label">Trades</span>
+            </button>
+            <button class="nav-btn">
+                <span class="nav-icon">👤</span>
+                <span class="nav-label">Profile</span>
+            </button>
+            <button class="nav-btn">
+                <span class="nav-icon">⚙️</span>
+                <span class="nav-label">Settings</span>
+            </button>
+        </div>
+    </nav>
+
+    <script>
+        // Countdown Timer
+        function updateCountdown() {
+            const endDate = new Date('2025-12-03').getTime();
+            const now = new Date().getTime();
+            const timeLeft = endDate - now;
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById('countdownTimer').textContent = 
+                `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+        }
+        
+        // Crypto Data
+        const cryptoData = [
+            { symbol: 'BTC/USDT', price: 52347.80, change: 2.3 },
+            { symbol: 'ETH/USDT', price: 2847.50, change: 1.8 },
+            { symbol: 'BNB/USDT', price: 587.30, change: -0.5 },
+            { symbol: 'SOL/USDT', price: 128.90, change: 5.1 },
+            { symbol: 'XRP/USDT', price: 0.6234, change: 3.2 },
+            { symbol: 'ADA/USDT', price: 0.4521, change: -1.2 }
+        ];
+        
+        function displayCryptoPrices() {
+            const container = document.getElementById('cryptoGrid');
+            container.innerHTML = cryptoData.map(crypto => `
+                <div class="crypto-card">
+                    <div class="crypto-symbol">${crypto.symbol}</div>
+                    <div class="crypto-price">$${crypto.price.toLocaleString()}</div>
+                    <div class="price-change ${crypto.change >= 0 ? 'positive' : 'negative'}">
+                        ${crypto.change >= 0 ? '+' : ''}${crypto.change}%
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        // Initialize Dashboard
+        function initDashboard() {
+            updateCountdown();
+            displayCryptoPrices();
+            
+            // Update countdown every second
+            setInterval(updateCountdown, 1000);
+            
+            // Update prices every 30 seconds (simulated)
+            setInterval(() => {
+                cryptoData.forEach(crypto => {
+                    // Simulate small price changes
+                    const change = (Math.random() - 0.5) * 0.3;
+                    crypto.price = crypto.price * (1 + change / 100);
+                    crypto.change = parseFloat((crypto.change + change).toFixed(2));
+                });
+                displayCryptoPrices();
+            }, 30000);
+        }
+        
+        // Start the dashboard
+        initDashboard();
+    </script>
+</body>
+</html>
