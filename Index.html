@@ -476,7 +476,6 @@
     </div>
 
     <script>
-        // VIP Countdown Timer
         function updateCountdown() {
             const vipEnd = new Date('2025-12-03').getTime();
             const now = new Date().getTime();
@@ -491,7 +490,6 @@
                 `${days}d ${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
         }
 
-        // Crypto Prices Data
         const cryptoData = [
             { symbol: 'BTC/USDT', price: 52347.80, change: 2.3 },
             { symbol: 'ETH/USDT', price: 2847.50, change: 1.8 },
@@ -514,15 +512,12 @@
             `).join('');
         }
 
-        // Initialize Dashboard
         function initDashboard() {
             updateCountdown();
             displayCryptoPrices();
             
-            // Update countdown every second
             setInterval(updateCountdown, 1000);
             
-            // Update prices every 10 seconds
             setInterval(() => {
                 cryptoData.forEach(crypto => {
                     const randomChange = (Math.random() - 0.5) * 0.4;
@@ -532,7 +527,6 @@
                 displayCryptoPrices();
             }, 10000);
             
-            // Simulate initial trade data
             setTimeout(() => {
                 document.getElementById('totalTrades').textContent = '12';
                 document.getElementById('winRate').textContent = '75%';
@@ -543,7 +537,6 @@
             }, 2000);
         }
 
-        // Start the dashboard
         initDashboard();
     </script>
 </body>
